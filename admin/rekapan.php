@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include 'conn.php';
+    include '../config/conn.php';
     if(empty($_SESSION['superadmin_name']))
     {
         header("Location:superadmin.php");
@@ -57,7 +57,7 @@
     $query = "SELECT * FROM votes";
     $result = mysqli_query($conn, $query);
     ?>
-    <table border="1" class="table table-sm ml-4 mr-4">
+    <table border="1" class="table table-sm ml-4 mr-4 ">
       <thead>
       <tr class="thead-dark">
         <th>No</th>

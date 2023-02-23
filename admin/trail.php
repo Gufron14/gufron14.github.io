@@ -1,6 +1,6 @@
 <?php
 
-include 'conn.php';
+include '../config/conn.php';
 // $fetch_candidate_data = "SELECT * FROM candidates";
 // $result_candidate_data = mysqli_query($con, $fetch_candidate_data);
 // while($res = mysqli_fetch_array($result_candidate_data))

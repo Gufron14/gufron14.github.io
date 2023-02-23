@@ -1,9 +1,9 @@
 <?php
     session_start();
-    include 'conn.php';
+    include '../config/conn.php';
     if(empty($_SESSION['voter_name']))
     {
-        header("Location:index.php");
+        header("Location:index.php", true, 301);
     }
 ?>
 <!doctype html>
@@ -15,7 +15,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="shortcut icon" href="kpumlogo.ico">
+    <link rel="shortcut icon" href="../img/kpumlogo.ico">
 
     <title>EVoting - Voting</title>
     <style>
@@ -27,7 +27,7 @@
 <body>
     <nav class="navbar navbar-expand-lg">
         <a class="navbar-brand font-weight-bold text-white" href="#">
-        <img src="logo kpum.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="../img/logo kpum.png" width="30" height="30" class="d-inline-block align-top" alt="">
         &nbsp E - Voting | KPUM IWU &nbsp
         </a>
         </a>
@@ -124,8 +124,8 @@
                         <tr>
                             <td class="pt-4"><h6><?php echo $res['can_id']?></h6></td>
                             <td><h6 class="pt-4"><?php echo $res['can_name']?></h6></td>
-                            <td><img src="profile/<?php echo $res['can_party_symbol'] ?>" alt="image" width="100"></td>
-                            <td><img src="profile/<?php echo $res['can_image'] ?>" alt="party" width="100"></td>
+                            <td><img src="../profile/<?php echo $res['can_party_symbol'] ?>" alt="image" width="100"></td>
+                            <td><img src="/profile/<?php echo $res['can_image'] ?>" alt="party" width="100"></td>
                             <td><a href="" data-toggle="modal" data-target="#submitvotemodal" data-candidate_id="<?php echo $res['can_id']?>" data-voter_id="<?php echo $_SESSION['voter_id']?>"><img src="http://icons.iconarchive.com/icons/iconarchive/blue-election/256/Election-Vote-2-icon.png" alt="vote" width="100"></a></td>
                         </tr>
                         <?php

@@ -1,9 +1,9 @@
 <?php 
     session_start();
-    include 'conn.php';
+    include '../config/conn.php';
     if(empty($_SESSION['superadmin_name']))
     {
-        header("Location:superadmin.php");
+        header("Location:../admin/superadmin.php");
     }
 
  // nama file

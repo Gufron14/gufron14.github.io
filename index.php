@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'conn.php';
+include './config/conn.php';
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +8,7 @@ include 'conn.php';
 <head>
 	<title>EVoting - Login</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-	<link rel="shortcut icon" href="kpumlogo.ico">
+	<link rel="shortcut icon" href="../img/kpumlogo.ico">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
 		body {font-family: sanssystem-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;}
@@ -77,7 +77,7 @@ include 'conn.php';
 				$get_voters_name = $get_voters_details['name'];
 				$_SESSION['voter_id'] = $voter_id;
 				$_SESSION['voter_name'] = $get_voters_name;
-				header('Location:voting.php');
+				header('Location:./user/voting.php');
 			}
 			else
 			{

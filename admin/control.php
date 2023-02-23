@@ -1,9 +1,9 @@
 <?php
     session_start();
-    include 'conn.php';
+    include '../config/conn.php';
     if(empty($_SESSION['superadmin_name']))
     {
-        header("Location:superadmin.php");
+        header("Location:../admin/superadmin.php");
     }
 ?>
 <!doctype html>
@@ -32,7 +32,7 @@
                     <a class="nav-link" href="control.php">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" data-toggle="modal" data-target="#addcandidatemodal">Add Candidate</a>
+                    <a class="nav-link" href="control.php" data-toggle="modal" data-target="#addcandidatemodal">Add Candidate</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="rekapan.php">Rekapan</a>
@@ -94,29 +94,29 @@
             </button>
         </div>
         <form action="" method="post" enctype="multipart/form-data">
-        <div class="modal-body">
-            <div class="form-group">
-                <label for="edit_can_id">Nomor Kandidat:</label>
-                <input type="text" name="can_id" id="edit_can_id" class="form-control" placeholder="Nomor Kandidat" required>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit_can_id">Nomor Kandidat:</label>
+                    <input type="text" name="can_id" id="edit_can_id" class="form-control" placeholder="Nomor Kandidat" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit_can_name">Candidate Name:</label>
+                    <input type="text" name="can_name" id="edit_can_name" class="form-control" placeholder="Candidate Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit_can_party">Calon Presiden Mahasiswa:</label>
+                    <input type="file" name="can_party" id="edit_can_party" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit_can_image">Calon Wakil Presiden Mahasiswa:</label>
+                    <input type="file" name="can_image" id="edit_can_image" class="form-control" required>
+                </div>
+                <input type="hidden" name="id" id="edit_id">
             </div>
-            <div class="form-group">
-                <label for="edit_can_name">Candidate Name:</label>
-                <input type="text" name="can_name" id="edit_can_name" class="form-control" placeholder="Candidate Name" required>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" name="edit_candidate" class="btn btn-info">Edit Candidate</button>
             </div>
-            <div class="form-group">
-                <label for="edit_can_party">Calon Presiden Mahasiswa:</label>
-                <input type="file" name="can_party" id="edit_can_party" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="edit_can_image">Calon Wakil Presiden Mahasiswa:</label>
-                <input type="file" name="can_image" id="edit_can_image" class="form-control" required>
-            </div>
-            <input type="hidden" name="id" id="edit_id">
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" name="edit_candidate" class="btn btn-info">Edit Candidate</button>
-        </div>
         </form>
         </div>
     </div>
@@ -147,84 +147,85 @@
     </div>
 
     <!-- Add Candidate -->
-<?php
-        if(isset($_POST['add_candidate']))
+    <?php
+    if(isset($_POST['add_candidate']))
+    {
+        $can_id = $_POST['can_id'];
+        $can_name = $_POST['can_name'];
+
+        //Calon Presiden Mahasiswa
+        $can_party = $_FILES['can_party'];
+        $can_party_filename = $can_party['name'];
+        $can_party_fileerror = $can_party['error'];
+        $can_party_filetmp = $can_party['tmp_name'];
+
+        $t = time();
+        $d = date("Y-m-d", $t);
+        $td = $t . $d;
+
+        $can_party_filename1 = $td . "_" . $can_party_filename;
+
+        $can_party_fileext = explode(".", $can_party_filename1);
+        $can_party_filecheck = strtolower(end($can_party_fileext));
+
+        $can_party_fileextstored = array('png', 'jpg', 'jpeg');
+
+        if(in_array($can_party_filecheck, $can_party_fileextstored))
         {
-            $can_id = $_POST['can_id'];
-            $can_name = $_POST['can_name'];
-
-            //Calon Presiden Mahasiswa
-            $can_party = $_FILES['can_party'];
-			$can_party_filename = $can_party['name'];
-			$can_party_fileerror = $can_party['error'];
-			$can_party_filetmp = $can_party['tmp_name'];
-
-			$t=time();
-			$d = date("Y-m-d",$t);
-			$td = $t.$d;
-
-			$can_party_filename1 = $td."_".$can_party_filename;
-
-			$can_party_fileext = explode(".", $can_party_filename1);
-			$can_party_filecheck = strtolower(end($can_party_fileext));
-
-			$can_party_fileextstored = array('png','jpg','jpeg');
-
-			if(in_array($can_party_filecheck, $can_party_fileextstored));
-			{
-				$can_party_destinationfile = 'profile/'.$can_party_filename1;
-				move_uploaded_file($can_party_filetmp, $can_party_destinationfile);
-				$can_party_img = $can_party_filename1;
-            }
-
-            //Calon Wakil Presiden Mahasiswa
-            $can_image = $_FILES['can_image'];
-			$can_image_filename = $can_image['name'];
-			$can_image_fileerror = $can_image['error'];
-			$can_image_filetmp = $can_image['tmp_name'];
-
-			$t=time();
-			$d = date("Y-m-d",$t);
-			$td = $t.$d;
-
-			$can_image_filename1 = $td."_".$can_image_filename;
-
-			$can_image_fileext = explode(".", $can_image_filename1);
-			$can_image_filecheck = strtolower(end($can_image_fileext));
-
-			$can_image_fileextstored = array('png','jpg','jpeg');
-
-			if(in_array($can_image_filecheck, $can_image_fileextstored));
-			{
-				$can_image_destinationfile = 'profile/'.$can_image_filename1;
-				move_uploaded_file($can_image_filetmp, $can_image_destinationfile);
-				$can_image_img = $can_image_filename1;
-			}
-
-            // echo $can_id.'  '.$can_name.'  '.$can_party_img.'  '.$can_image_img;
-            $insert_candidate_data = "INSERT INTO candidates (can_id, can_name, can_image, can_party_symbol) VALUES ('$can_id','$can_name','$can_image_img','$can_party_img')";
-            $insert_result = mysqli_query($conn, $insert_candidate_data);
-            // print_r($insert_result);
-            if($insert_result == '1')
-            {
-                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Candidate Added Successfully</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>';
-            }
-            else
-            {
-                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Failed to Add Candidate</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>';
-            }
+            $can_party_destinationfile = '../profile/' . $can_party_filename1;
+            move_uploaded_file($can_party_filetmp, $can_party_destinationfile);
+            $can_party_img = $can_party_filename1;
         }
-    ?>
+
+        //Calon Wakil Presiden Mahasiswa
+        $can_image = $_FILES['can_image'];
+        $can_image_filename = $can_image['name'];
+        $can_image_fileerror = $can_image['error'];
+        $can_image_filetmp = $can_image['tmp_name'];
+
+        $t = time();
+        $d = date("Y-m-d", $t);
+        $td = $t . $d;
+
+        $can_image_filename1 = $td . "_" . $can_image_filename;
+
+        $can_image_fileext = explode(".", $can_image_filename1);
+        $can_image_filecheck = strtolower(end($can_image_fileext));
+
+        $can_image_fileextstored = array('png', 'jpg', 'jpeg');
+
+        if(in_array($can_image_filecheck, $can_image_fileextstored))
+        {
+            $can_image_destinationfile = '../profile/' . $can_image_filename1;
+            move_uploaded_file($can_image_filetmp, $can_image_destinationfile);
+            $can_image_img = $can_image_filename1;
+        }
+
+        // echo $can_id.'  '.$can_name.'  '.$can_party_img.'  '.$can_image_img;
+        $insert_candidate_data = "INSERT INTO candidates (can_id, can_name, can_image, can_party_symbol) VALUES ('$can_id','$can_name','$can_image_img','$can_party_img')";
+        $insert_result = mysqli_query($conn, $insert_candidate_data);
+
+        if($insert_result)
+        {
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Candidate Added Successfully</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>';
+        }
+        else
+        {
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Failed to Add Candidate</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>';
+        }
+    }
+?>
+
 
     <!-- Edit Candidate -->
     <?php
@@ -253,7 +254,7 @@
 
 			if(in_array($can_party_filecheck, $can_party_fileextstored));
 			{
-				$can_party_destinationfile = 'profile/'.$can_party_filename1;
+				$can_party_destinationfile = '../profile/'.$can_party_filename1;
 				move_uploaded_file($can_party_filetmp, $can_party_destinationfile);
 				$can_party_img = $can_party_filename1;
             }
@@ -277,14 +278,14 @@
 
 			if(in_array($can_image_filecheck, $can_image_fileextstored));
 			{
-                $can_image_destinationfile = 'profile/'.$can_image_filename1;
+                $can_image_destinationfile = '../profile/'.$can_image_filename1;
                 $q = "SELECT can_image, can_party_symbol FROM candidates WHERE id='$id'";
                 $res = mysqli_query($conn,$q);
                 $r = mysqli_fetch_array($res);
                 $old_can_image = $r['can_image'];
                 $old_can_party_image = $r['can_party_symbol'];
-                unlink('profile/'.$old_can_image);
-                unlink('profile/'.$old_can_party_image);
+                unlink('./profile/'.$old_can_image);
+                unlink('../profile/'.$old_can_party_image);
 				move_uploaded_file($can_image_filetmp, $can_image_destinationfile);
 				$can_image_img = $can_image_filename1;
 			}
@@ -316,20 +317,21 @@
     
     <!-- Delete Candidate -->
     <?php
-        if(isset($_POST['delete_candidate']))
-        {
-            $id = $_POST['id'];
-            $q = "SELECT can_image, can_party_symbol FROM candidates WHERE id='$id'";
-            $res = mysqli_query($conn,$q);
+    if(isset($_POST['delete_candidate'])) {
+        $id = $_POST['id'];
+        $q = "SELECT can_image, can_party_symbol FROM candidates WHERE id='$id'";
+        $res = mysqli_query($conn,$q);
+        if($res) {
             $r = mysqli_fetch_array($res);
             $old_can_image = $r['can_image'];
             $old_can_party_image = $r['can_party_symbol'];
-            unlink('profile/'.$old_can_image);
-            unlink('profile/'.$old_can_party_image);
+            if(isset($old_can_image) && isset($old_can_party_image)) {
+                unlink('../profile/'.$old_can_image);
+                unlink('../profile/'.$old_can_party_image);
+            }
             $delete_query = "DELETE FROM candidates WHERE id='$id'";
             $delete_candidate = mysqli_query($conn,$delete_query);
-            if($delete_candidate == '1')
-            {
+            if($delete_candidate) {
                 echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>Candidate Deleted Successfully</strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -337,8 +339,7 @@
                 </button>
               </div>';
             }
-            else
-            {
+            else {
                 echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>Failed to Delete Candidate</strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -347,7 +348,10 @@
               </div>';
             }
         }
-    ?>
+    }
+?>
+
+
     <h1 class="text-center mt-2">Candidate List</h1>
     <div class="container mt-3">
         <table class="table table-striped table-hover text-center">
@@ -375,8 +379,8 @@
                     
                     <td class="pt-4"><h6><?php echo $res['can_id']?></h6></td>
                     <td><h6 class="pt-4"><?php echo $res['can_name']?></h6></td>
-                    <td><img src="profile/<?php echo $res['can_party_symbol'] ?>" alt="image" width="100"></td>
-                    <td><img src="profile/<?php echo $res['can_image'] ?>" alt="party" width="100"></td>
+                    <td><img src="../profile/<?php echo $res['can_party_symbol'] ?>" alt="image" width="100"></td>
+                    <td><img src="../profile/<?php echo $res['can_image'] ?>" alt="party" width="100"></td>
                     
 
                     <td class="pt-4"><a href="" class="btn btn-lg btn-info" data-toggle="modal" data-target="#editcandidatemodal" data-id="<?php echo $res['id'] ?>" data-can_id="<?php echo $res['can_id']?>" data-can_name="<?php echo $res['can_name']?>" ><i class="fa fa-pencil-square" aria-hidden="true"></i></a></td>

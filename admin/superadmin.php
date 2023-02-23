@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include 'conn.php';
+    include '../config/conn.php';
 ?>
 <!doctype html>
 <html lang="en">

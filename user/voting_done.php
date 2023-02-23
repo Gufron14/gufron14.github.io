@@ -1,9 +1,9 @@
 <?php
     session_start();
-    include 'conn.php';
+    include '../config/conn.php';
     if(empty($_SESSION['voter_name']))
     {
-        header("Location:index.php");
+        header("Location:index.php", true, 301);
     }
     $voter_id = $_SESSION['voter_id'];
     $fetch_can_id = "SELECT * FROM votes WHERE voter_id='$voter_id'";
@@ -31,7 +31,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="shortcut icon" href="kpumlogo.ico">
+    <link rel="shortcut icon" href="../img/kpumlogo.ico">
 
     <title>Voting Success</title>
     <style>
@@ -44,42 +44,11 @@
   <body>
   <div class="container">
         <div class="text-center" id="cust_margin">
-            <img src="check.png" alt="success" width="100" class="mb-3">
+            <img src="../img/check.png" alt="success" width="100" class="mb-3">
             <h1 class="text-success">Terimakasih <font color='#5C125E'> <?php echo $_SESSION ['voter_id'] ?>, </font> <br> Telah Memberikan Hak Suara</h1>
             
             <p>Anda Memilih Nomor Kandidat : <?php echo $real_can_id?>, Yaitu : <?php echo $real_can_name?> </p> <br>
             <!-- <a href="#"> <button class="btn btn-primary text-light font-weight-bold">Lihat Statistik</button></a> -->
-            <p>Jumlah Pemilih : 
-            <?php 
-                // Make a database connection here
-                
-                $voters_query = "SELECT * FROM voters";
-                $result = mysqli_query($conn, $voters_query);
-                
-                if ($result) {
-                    $voters_count = mysqli_num_rows($result);
-                    echo $voters_count;
-                } else {
-                    echo "Error fetching voters count.";
-                }
-            ?> 
-            <p>Jumlah yang sudah Memilih : 
-            <?php 
-                // Make a database connection here
-                
-                $votes_query = "SELECT * FROM votes";
-                $result = mysqli_query($conn, $votes_query);
-                
-                if ($result) {
-                    $votes_count = mysqli_num_rows($result);
-                    echo $votes_count;
-                } else {
-                    echo "Error fetching voters count.";
-                }
-            ?> 
-        </p>
-
-
             <a href="vlogout.php"> <button class="btn btn-dark text-light font-weight-bold">Logout</button></a>
 
         </div>
