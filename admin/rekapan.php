@@ -1,10 +1,11 @@
 <?php
     session_start();
     include '../config/conn.php';
-    if(empty($_SESSION['superadmin_name']))
-    {
-        header("Location:superadmin.php");
-    }
+    if(!isset($_SESSION['superadmin_username'])) {
+      // Jika belum, redirect ke halaman login
+      header('Location: superadmin.php');
+      exit();
+  }
 ?>
 
 <!doctype html>
@@ -22,7 +23,7 @@
 <body>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand font-weight-bold text-white" href="#">
-        <img src="logo kpum.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="../img/logo kpum.png" width="30" height="30" class="d-inline-block align-top" alt="">
         &nbsp E - Voting | KPUM IWU &nbsp
         </a>
         </a>
@@ -37,9 +38,12 @@
                 <li class="nav-item active">
                     <a class="nav-link text-light font-weight-bold" href="rekapan.php">Rekapan <span class="sr-only">(current)</span></a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="statistik.php">Statistik</a>
+                </li>
             </ul>
         </div>
-    </nav>
+      </nav>
   
     <a href="export-xls.php"> <button type="button" class="btn btn-primary mt-3 ml-4">Rekap</button> </a>
 
@@ -53,18 +57,39 @@
 
       <br>
       <br>
+    <!-- statistik
+    <table border="1" class="table table-sm">
+      <thead>
+        <tr class="thead-dark text-center">
+          <th>Total Suara</th>
+          <th>Sudah Memilih</th>
+          <th>Suara Kandidat No 1</th>
+          <th>Suara Kandidat No 2</th>
+        </tr>
+      </thead>
+    </table>
+
+
+    <tr>
+      <td><?php echo $data['id']; ?> </td>
+      <td><?php echo $data['voter_id']; ?> </td>
+      <td><?php echo $data['can_id']; ?> </td>
+      <td><?php echo $data['voted_at']; ?> </td>
+    <tr> -->
+
+    <!-- rekap -->
     <?php
-    $query = "SELECT * FROM votes";
-    $result = mysqli_query($conn, $query);
+      $query = "SELECT * FROM votes";
+      $result = mysqli_query($conn, $query);
     ?>
     <table border="1" class="table table-sm ml-4 mr-4 ">
       <thead>
-      <tr class="thead-dark">
-        <th>No</th>
-        <th>Nama</th>
-        <th>Pilihan</th>
-        <th>Waktu Memilih</th>
-      </tr>
+        <tr class="thead-dark">
+          <th>No</th>
+          <th>Nama</th>
+          <th>Pilihan</th>
+          <th>Waktu Memilih</th>
+        </tr>
       </thead>
     <?php
     if ($result->num_rows > 0) {
@@ -72,7 +97,6 @@
       while($data = $result->fetch_assoc()) {
     ?>
     <tr>
-      
       <td><?php echo $data['id']; ?> </td>
       <td><?php echo $data['voter_id']; ?> </td>
       <td><?php echo $data['can_id']; ?> </td>
@@ -85,6 +109,10 @@
         </tr>
     <?php } ?>
     </table
+
+    <?php 
+    mysqli_close($conn);
+    ?>
 
 </body>
 </html>

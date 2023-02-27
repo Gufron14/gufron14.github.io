@@ -61,13 +61,13 @@
                 <a class="nav-link text-muted" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-muted" href="<?php echo $base_url?>vlogout.php">Logout</a>
+                <a class="nav-link text-light" href="<?php echo $base_url?>vlogout.php">Logout</a>
             </li>
         </ul>
     </div>
     </nav>
     
-    <h3 class="text-center font-weight-bold mt-3">Selamat Datang <?php echo $_SESSION['voter_id'] ?> di E - Voting KPUM IWU </h3>
+    <h3 class="text-center font-weight-bold mt-3">Selamat Datang <?php echo $_SESSION['voter_id'] ?>, <br> di E - Voting KPUM IWU </h3>
     <p class="text-center">Sebelum melakukan Pemilihan, silakan pahami terlebih dahulu Tata Cara Pemungutan Suara</p>
     <div class="container mt-3 border rounded">
         <h4><b>TATA CARA PEMUNGUTAN SUARA</b></h4>

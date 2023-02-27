@@ -1,9 +1,10 @@
 <?php 
     session_start();
     include '../config/conn.php';
-    if(empty($_SESSION['superadmin_name']))
-    {
-        header("Location:../admin/superadmin.php");
+    if(!isset($_SESSION['superadmin_username'])) {
+        // Jika belum, redirect ke halaman login
+        header('Location: superadmin.php');
+        exit();
     }
 
  // nama file

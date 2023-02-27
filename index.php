@@ -61,7 +61,7 @@ include './config/conn.php';
 	Periode 2023 - 2024</h4>
 	<hr>
 	<h4 class="text-center my-3"><b>Login Pemilih</b></h4>
-	<p class="text-center my-3">Silakan Login dengan <b>Username</b> dan <b>Password</b> yang telah diberikan!  </p>
+	<p class="text-center my-3">Silakan Login dengan <b>Username</b> dan <b>Password</b> yang telah diberikan melalui email!  </p>
 	<div class="container">
 	<?php
 		if(isset($_POST['login']))
@@ -86,6 +86,7 @@ include './config/conn.php';
 			
 		}
 	?>
+
 		<div class="row">
 			<div class="col-md-3"></div>
 			<div class="col-md-6">

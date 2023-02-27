@@ -1,9 +1,10 @@
 <?php
     session_start();
     include '../config/conn.php';
-    if(empty($_SESSION['superadmin_name']))
-    {
-        header("Location:../admin/superadmin.php");
+    if(!isset($_SESSION['superadmin_username'])) {
+        // Jika belum, redirect ke halaman login
+        header('Location: superadmin.php');
+        exit();
     }
 ?>
 <!doctype html>
@@ -29,13 +30,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="control.php">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link font-weight-bold" href="control.php">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="control.php" data-toggle="modal" data-target="#addcandidatemodal">Add Candidate</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="rekapan.php">Rekapan</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="statistik.php">Statistik</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="alogout.php">Logout</a>
@@ -402,6 +406,10 @@
             </tbody>
         </table>
     </div>  
+
+    <?php
+    mysqli_close($conn);
+    ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
